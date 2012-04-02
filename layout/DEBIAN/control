@@ -1,0 +1,9 @@
+Name: SMS Timestamps
+Package: com.gabriobarbieri.SMSTimestamps
+Author: Gabrio Barbieri <gabriobarbieri@gmail.com>
+Depends: mobilesubstrate
+Version: 1.0
+Architecture: iphoneos-arm
+Description: An SMS app tweak that makes it set a visible timestamp on ALL messages, or just some of them :) whatever you choose.
+Maintainer: BigBoss <bigboss@thebigboss.org>
+Section: Tweaks

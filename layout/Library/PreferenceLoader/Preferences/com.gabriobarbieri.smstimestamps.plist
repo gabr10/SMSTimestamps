@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>entry</key>
+	<dict>
+		<key>cell</key>
+		<string>PSLinkCell</string>
+		<key>icon</key>
+		<string></string>
+		<key>label</key>
+		<string>SMS Timestamps</string>
+	</dict>
+	<key>items</key>
+	<array>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>isStaticText</key>
+			<true/>
+			<key>label</key>
+			<string>Enable or disable regular timestamps</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.gabriobarbieri.SMSTimestamps</string>
+			<key>key</key>
+			<string>SwitchCell5</string>
+			<key>label</key>
+			<string>Yes / No:</string>
+			<key>PostNotification</key>
+			<string>com.gabriobarbieri.SMSTimestamps-preferencesChanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>If the above is enabled, one of the time constraints below will be used to determine how often do you want timestamps to show on your messages.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>isStaticText</key>
+			<true/>
+			<key>label</key>
+			<string>Time constraints</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkListCell</string>
+			<key>defaults</key>
+			<string>com.gabriobarbieri.SMSTimestamps</string>
+			<key>key</key>
+			<string>LinkListCell7</string>
+			<key>label</key>
+			<string>Selected:</string>
+			<key>detail</key>
+			<string>PSListItemsController</string>
+			<key>validTitles</key>
+			<array>
+				<string>Every message</string>
+				<string>After 1 minute</string>
+				<string>After 5 minutes</string>
+				<string>After 10 minutes</string>
+			</array>
+			<key>validValues</key>
+			<array>
+				<integer>1</integer>
+				<integer>2</integer>
+				<integer>3</integer>
+				<integer>4</integer>
+			</array>
+			<key>default</key>
+			<integer>1</integer>
+			<key>PostNotification</key>
+			<string>com.gabriobarbieri.SMSTimestamps-preferencesChanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>isStaticText</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>© 2012 Gabrio Barbieri</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>Follow me on Twitter: http://twitter.com/gabr10</string>
+		</dict>
+	</array>
+	<key>title</key>
+	<string>SMS Timestamps</string>
+</dict>
+</plist>
