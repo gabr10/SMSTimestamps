@@ -1,96 +1,67 @@
+#import <substrate.h>
 BOOL soDoWeOrNot;
-unsigned int whatDidWeSelect;
+BOOL chopSecondsOff;
+NSUInteger whatDidWeSelect;
 NSDictionary *prefs;
-NSDate *oldDate;
-NSDate *lastDisplayed;
-
 
 static void LoadSettings() { 
     prefs = [[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/com.gabriobarbieri.SMSTimestamps.plist"];	
     soDoWeOrNot = (BOOL)[[prefs objectForKey:@"SwitchCell5"] boolValue];
     whatDidWeSelect = [[prefs objectForKey:@"LinkListCell7"] intValue];
+    chopSecondsOff = (BOOL)[[prefs objectForKey:@"SwitchCell8"] boolValue];
 	[prefs release];
 }
 
 static void SettingsChanged(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
 	LoadSettings();
-	}
+}
 
-static BOOL CheckForDifference(NSDate *date, int lapse){
-    if(oldDate == nil){//should happen upon the first table load.
-        oldDate = date;
-        lastDisplayed = date;
-        
-        return YES;
-    }else{//means this is not the first one, do our thang.
-        NSDate *thisMsg = date;
-        
-        NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit;
-    NSDateComponents *components = [gregorianCalendar components:unitFlags
-                                                        fromDate:lastDisplayed
-                                                          toDate:thisMsg
-                                                         options:0];
-                                                         
-    int c = [components minute];
-    [gregorianCalendar release];
-    oldDate = date;
-    
-        if(c >=lapse){
-        lastDisplayed = date;
-            return YES;
-        }else{
-        
-        return NO;}
-        
-    }
+static NSDate* chopSeconds(NSDate *date) {
+    NSDateComponents *time = [[NSCalendar currentCalendar] components:NSSecondCalendarUnit
+    						                                 fromDate:date];
+    NSInteger seconds = [time second];
+    NSDate *choped = [date dateByAddingTimeInterval:(-1*seconds)];
+    return choped;
+}
 
+static NSDate* nextEligible(NSDate *date, int minutes) {
+    NSDate *from = (chopSecondsOff) ? [chopSeconds(date) retain] : [date copy];
+    NSDate *eligableDate = [from dateByAddingTimeInterval:(60 * minutes)];
+    [from release];
+    return eligableDate;
 }
 
 %hook CKTranscriptBubbleData
 
-
-
-- (BOOL)_shouldShowTimestampForDate:(id)arg1{
-    LoadSettings();
+- (void)_setupNextEligibleTimestamp:(id)timestamp{
     if(!soDoWeOrNot) {
-       return %orig(arg1);
+       return %orig(timestamp);
     }
+    
+    MSIvarHook(NSDate *, _nextEligibleTimestamp);
+    [_nextEligibleTimestamp release];
+
     switch (whatDidWeSelect) {
-        case 1:
-            return YES;
         case 2:
-            return CheckForDifference(arg1, 1);
+            _nextEligibleTimestamp = nextEligible(timestamp, 1);
+            break;
         case 3:
-            return CheckForDifference(arg1, 5);
+            _nextEligibleTimestamp = nextEligible(timestamp, 5);
+            break;
         case 4:
-            return CheckForDifference(arg1, 10);
+            _nextEligibleTimestamp = nextEligible(timestamp, 10);
+            break;
+        case 1:
         default:
-            return YES;
-            
+            _nextEligibleTimestamp = nextEligible(timestamp, 0);
     }
-}
-
-
-
-%end
-
-%hook CKTranscriptController
-
-- (void)viewWillDisappear:(BOOL)arg1{
-    oldDate = nil;
-    %orig(arg1);
-}
-- (void)viewDidDisappear:(BOOL)arg1{
-    oldDate = nil;
-    %orig(arg1);
+    
+    [_nextEligibleTimestamp retain];
 }
 
 %end
 
-
-%ctor
-{
+%ctor {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	%init;
 	LoadSettings();
