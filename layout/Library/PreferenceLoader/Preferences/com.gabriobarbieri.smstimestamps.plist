@@ -84,6 +84,34 @@
 			<string>PSGroupCell</string>
 			<key>isStaticText</key>
 			<true/>
+			<key>label</key>
+			<string>Chop seconds off interval calculations</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.gabriobarbieri.SMSTimestamps</string>
+			<key>key</key>
+			<string>SwitchCell8</string>
+			<key>label</key>
+			<string>Yes / No:</string>
+			<key>PostNotification</key>
+			<string>com.gabriobarbieri.SMSTimestamps-preferencesChanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>If the above is enabled, seconds will be discarded in calculating the time difference.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>isStaticText</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>cell</key>
